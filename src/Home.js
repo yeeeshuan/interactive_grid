@@ -9,7 +9,7 @@ import {
 import "./App.css"
 import Demo from './Demo';
   
-function Home () {
+function Home() {
     return(
          <div className = "home">
             <h1 className = "homeTitle"> Interactive Grid </h1>

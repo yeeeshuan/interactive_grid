@@ -33,7 +33,7 @@ class App extends Component{
             <Router>
             <nav>
                 <div>
-                  <Link to = "/">
+                  <Link to = "/interactive_grid">
                         Home 
                   </Link>
                   <Link to = "/Demo">
@@ -47,8 +47,8 @@ class App extends Component{
             {this.state.popUp ? <PopUp/>
               : <div/>}
             <Routes>
-                <Route exact path='/' element={< Home />}></Route>
-                <Route exact path='/Demo' element={< Demo clicked = {this.state.popUp}/>}></Route>
+                <Route exact path='/interactive_grid' element={<Home/>}></Route>
+                <Route exact path='/Demo' element={<Demo clicked = {this.state.popUp}/>}></Route>
             </Routes>
             </Router>
 
