@@ -1,41 +1,56 @@
-import React, {Component} from "react";
-import Grid from "./Sketches/Sketch";
-import "./App.css"; 
+import React, { Component } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link
+} from 'react-router-dom';
+import Home from "./Home";
+import Demo from "./Demo";
+import "./Navbar.css"
 
 class App extends Component{
   constructor(props){
-    super(props)
+    super(); 
     this.state = {
-      key: null
-    }
-  
-  }
-
-  handleKeyPress = (event) => {
-    if (event.key == "1"){
-      this.setState(prevState => ({
-        ...prevState,
-        key: event.key
-      }))
-    }
-
-    if (event.key == "2"){
-      this.setState(prevState => ({
-        ...prevState,
-        key: event.key
-      }))
+      popUp: false,
     }
   }
 
-  render(){
-    return(
-          <div className = "centered">
-            <input type="text" id="one" onKeyPress={this.handleKeyPress} />
-            <h1>Option 1</h1>
-            <Grid option = {this.state.key}/>
-          </div>
-    )
+  isClicked = (event) =>{
+    console.log(this.state.popUp)
+    this.state.popUp = !this.state.popUp; 
+    this.setState(prevState => ({
+      ...prevState,
+      moveKey: this.state.popUp,
+    }))
+
   }
+
+    render(){
+        return(
+            <Router>
+            <nav>
+                <div>
+                  <Link to = "/">
+                        Home 
+                  </Link>
+                  <Link to = "/Demo">
+                        Demo 
+                  </Link>
+                </div>
+                <div onClick = {this.isClicked}>
+                      Help
+                </div>
+            </nav>
+            <Routes>
+                <Route exact path='/' element={< Home />}></Route>
+                <Route exact path='/Demo' element={< Demo clicked = {this.state.popUp}/>}></Route>
+            </Routes>
+            </Router>
+
+        )
+    } 
 }
 
 export default App; 

@@ -1,4 +1,5 @@
 {
+  "homepage": "https://yeeeshuan.github.io/grid_interactions",
   "name": "grid_interactions",
   "version": "0.1.0",
   "private": true,
@@ -12,6 +13,7 @@
     "react-dom": "^18.2.0",
     "react-p5": "^1.3.31",
     "react-p5-wrapper": "^3.4.0",
+    "react-router-dom": "^6.4.3",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -38,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }

@@ -3,24 +3,43 @@ import Sketch from "react-p5";
 import * as ml5 from "ml5"; 
 
 let video; 
-let cnv; 
 let handpose; 
 let facemesh; 
+let objectDetector; 
 let predictionsFinger = []; 
 let predictionsFace = []; 
+let obj_1 = null; 
+let obj_2 = null; 
+let obj_3 = null; 
+let obj_4 = null; 
+let object = null; 
 let position = [0,0]; 
 let grid = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+
+    
 ]; 
+let temp = new Array(30).fill(0)
+let grid_2 = new Array(30).fill(temp)
 let numFingers = 0; 
 
 //face
@@ -51,11 +70,14 @@ function Grid(props){
         facemesh.on("predict", results => {
             predictionsFace = results;
         });
+
+        objectDetector = ml5.objectDetector('cocossd', {}, modelLoaded);
         
 		// use parent to render the canvas in this ref
 		// (without that p5 will render the canvas outside of your component)
-		cnv = p5.createCanvas(700, 700).parent(canvasParentRef);
         video.hide()
+
+        p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
 	};
 
 
@@ -63,12 +85,21 @@ function Grid(props){
         console.log("Model ready!");
     }
 
+    function modelLoaded() {
+        console.log('Model Loaded!');
+      }
+
 	const draw = (p5) => {
-        p5.createCanvas(p5.windowWidth, p5.windowHeight); 
-        p5.background(15,16,22); 
+        p5.background("#252837"); 
         configureGrid();
         drawGrid(p5); 
-        p5.textSize(32)
+        p5.textSize(12)
+        if (props.colorKey == 2){
+            p5.text("Object for Color 1: " + obj_1, p5.windowWidth * 0.1, 700)
+            p5.text("Object for Color 2: " + obj_2, p5.windowWidth * 0.1 + 150, 700)
+            p5.text("Object for Color 3: " + obj_3, p5.windowWidth * 0.1 + 300, 700)
+            p5.text("Object for deleting: " + obj_4, p5.windowWidth * 0.1 + 450, 700)
+        }
     }
 
     //for finding fingers and the number of fingers being held up 
@@ -130,19 +161,18 @@ function Grid(props){
                 let x = points[j][0]; 
                 let y = points[j][1]; 
     
-                let right = points[127][0]
-                let middle = points[6]
-                let left = points[356][0]
+                let right = points[127]
+                let middle = points[1]
+                let left = points[356]
                 let lip_up = points[13]
                 let lip_down = points[14]
-                let up = points[151]
-                let down = points[17]
+                let up = points[454]
                 moveRightPrev = moveRight 
                 moveLeftPrev = moveLeft
                 moveUpPrev = moveUp
                 moveDownPrev = moveDown
 
-                if (isNegative(right, middle[0])){
+                if (isNegative(right[0], middle[0])){
                     console.log("Right")
                     moveRight = true; 
                     if (moveRightPrev){
@@ -160,7 +190,7 @@ function Grid(props){
                     rightSwitch = false; 
                 }
 
-                if (!isNegative(left, middle[0])){
+                if (!isNegative(left[0], middle[0])){
                     moveLeft = true; 
                     if (moveLeftPrev){
                         leftSwitch = false; 
@@ -176,15 +206,83 @@ function Grid(props){
                     moveLeft = false; 
                     leftSwitch = false; 
                 }
+
+                if (distance(lip_up, lip_down) > 15){
+                    moveDown = true; 
+                    if (moveDownPrev){
+                        downSwitch = false
+                    }
+                    else{
+                        if (position[1] <= grid.length-2){
+                            position[1] += 1; 
+                        }
+                    }
+                }else{
+                    moveDown = false; 
+                    downSwitch = false; 
+                }
+
+                if (!isNegative(middle[1], up[1])){
+                    moveUp = true; 
+                    if (moveUpPrev){
+                        upSwitch = false
+                    }
+                    else{
+                        position[1] -= 1
+                        if (position[1]<=0){
+                            position[1] = 0; 
+                        }
+                    }
+                }else{
+                    moveUp = false; 
+                    upSwitch = false; 
+                }
             }
         }
                 
 
     }
 
+    //for setting objects to colors 
+    function objectColor(){
+        objectDetector.detect(video, (err, results) => {
+
+            for(var i = 0; i<results.length; i++){
+                console.log(results[i])
+                if (results[i]["label"] != "person" && results[i]["width"] >= 300 && results[i]["confidence"] > 0.70){
+                    temp = results[i]["label"]
+                }
+            }
+
+            object = results[results.length-1]["label"]
+
+           if (obj_1 == null){
+               if (object != "person"){
+                    obj_1 = object
+               }
+           }
+           if (obj_2 == null && (object !== obj_1)){ 
+                if (object != "person"){
+                    obj_2 = object
+                }
+           }
+           if (obj_2 != null && obj_3 == null && (object !== obj_2 && object !== obj_1)){
+                if (object != "person"){
+                    obj_3 = object
+                }
+           }
+           if (obj_3 != null && obj_4 == null && (object !== obj_3 && object !== obj_2 && object !== obj_1)){
+                if (object != "person"){
+                    obj_4 = object
+                }
+           }
+          });
+    }
+
 
     function configureGrid(){
-        if (props.option == 1){
+        console.log(props.moveKey)
+        if (props.colorKey == 1){
             findFingers(); 
             if (numFingers == 1){
                 grid[position[0]][position[1]] = 1
@@ -203,32 +301,49 @@ function Grid(props){
             }
         }
 
-        if (props.option == 2){
+        if (props.colorKey == 2){
+            objectColor(); 
+            if (object == obj_1){
+                grid[position[0]][position[1]] = 1
+            }
+            if (object == obj_2){
+                grid[position[0]][position[1]] = 2
+            }
+            if (object == obj_3){
+                grid[position[0]][position[1]] = 3
+            }
+            if (object == obj_4){
+                grid[position[0]][position[1]] = 0
+            }
+        }
+
+        if (props.moveKey == 1){
             findFace()
         }
+
     }
 
     function drawGrid(p5) {
-        var size = 50; 
-        p5.stroke(255); 
+        var size = 30; 
+        p5.stroke(80,80,80); 
         for(var i = 0; i <grid.length; i++){
         for (var j = 0; j< grid.length; j++){
           if (grid[i][j] == 0){
               p5.fill(15, 16, 22);  
           }
           else if (grid[i][j] == 1) {
-              p5.fill(61,92,123); 
+              p5.fill(props.colorOne); 
           }
           else if (grid [i][j] == 2) {
-              p5.fill(106,93,123); 
+              p5.fill(props.colorTwo); 
           }
           else if (grid [i][j] == 3) {
-              p5.fill(226,121,130); 
+              p5.fill(props.colorThree); 
           }
-          p5.rect(500 + (size*i) , 25 + (size*j), size, size); 
+          p5.rect(p5.windowWidth * 0.1 + (size*i) , 25 + (size*j), size, size); 
       }
-      p5.fill(255); 
-      p5.rect(500 + (size*position[0]) , 25 + (size*position[1]), size, size);
+      p5.fill(255, 255, 255, 63); 
+      p5.rect(p5.windowWidth * 0.1 + (size*position[0]) , 25 + (size*position[1]), size, size);
     }
 	}
 
@@ -245,6 +360,7 @@ function Grid(props){
     }
 
   const keyPressed = (p5) =>{
+    //moving around using keyboard
     if (p5.keyCode == 37){
       if (position[0] >= 1){
         position[0] -= 1
@@ -265,6 +381,21 @@ function Grid(props){
         position[1] += 1
       }
     }
+
+    //assigning color using keyboard 
+    if (p5.keyCode == 49){
+        grid[position[0]][position[1]] = 1
+
+      }
+    if (p5.keyCode == 50){
+        grid[position[0]][position[1]] = 2
+      }
+    if (p5.keyCode == 51){
+        grid[position[0]][position[1]] = 3
+      }
+    if (p5.keyCode == 32){
+        grid[position[0]][position[1]] = 0
+      }
   }
 	return <Sketch setup={setup} draw={draw} keyPressed ={keyPressed} />;
 };

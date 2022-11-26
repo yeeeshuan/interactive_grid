@@ -1,0 +1,26 @@
+nav{
+    background-color: #08031D ;
+    justify-content: space-between;
+    display: flex; 
+    color: white; 
+    height: 60px; 
+    align-items: center;
+    padding-left: 25px; 
+    padding-right: 25px; 
+}
+
+a {
+    margin-right: 15px; 
+    text-decoration: none;
+    color: white; 
+}
+
+a:link, a:visited {
+    color: white; 
+}
+
+a:hover{
+    color: darkgray; 
+    transition: 0.3s
+}
+

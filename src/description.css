@@ -1,0 +1,35 @@
+p{
+    color: darkgray; 
+    font-size: 14px; 
+    margin-right: 50px; 
+}
+
+.popUp{
+    position: fixed;
+
+    left: 35%;
+    top: 30%;
+
+    width: 30%;
+
+    border: 2px solid darkgrey;
+    border-radius: 15px;
+
+    background-color: #FDFFFC;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    color: #011627;
+    z-index: 2; 
+}
+
+.popUpText{
+    padding: 30px; 
+    line-height: 1.5;
+    color:white; 
+    background-color: #0F1016;
+    border-radius: 14px; 
+}
