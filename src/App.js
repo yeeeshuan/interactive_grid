@@ -7,6 +7,7 @@ import {
 } from 'react-router-dom';
 import Home from "./Home";
 import Demo from "./Demo";
+import PopUp from "./Help";
 import "./Navbar.css"
 
 class App extends Component{
@@ -43,6 +44,8 @@ class App extends Component{
                       Help
                 </div>
             </nav>
+            {this.state.popUp ? <PopUp/>
+              : <div/>}
             <Routes>
                 <Route exact path='/' element={< Home />}></Route>
                 <Route exact path='/Demo' element={< Demo clicked = {this.state.popUp}/>}></Route>

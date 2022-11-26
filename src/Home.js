@@ -12,16 +12,21 @@ import Demo from './Demo';
 function Home () {
     return(
          <div className = "home">
-            <h1 className = "home"> Interactive Grid </h1>
-            <p className = "homeDesTitle">
-                How can we move past using a keyboard and mouse to talk to a computer? 
+            <h1 className = "homeTitle"> Interactive Grid </h1>
+            <p className = "homeDesQuestion">
+                How can we move past using a keyboard to talk to a computer? 
             </p>
-            <p className = "homeDes">
+            <p className = "homeDesBody">
                 This is the basic question driving the Interative Grid project. 
                 Using ML libraries such as ML5.js and the Google Teachable Machine, 
-                the Interative Grid project serves as a fun and informative way to interact with 
-                various experimental methods of designing for accessbility, using only users&lsquo; hands and face to 
-                control how to move around and assign color to a 20X20 grid. 
+                the Interative Grid project serves as a fun way to interact with 
+                various experimental methods of designing for accessbility, using only users&lsquo; hands and face and 
+                objects around them to control how to move around and assign color to a 20X20 grid. 
+                <br/>
+                <br/>
+                The goal of this project is to help designers learn more about various alternative methods to interact with the computer 
+                and provide insights to the ML libraries and tools available to create such interactions. 
+                
             </p>
                 <Link to = "/Demo">
                 <p className = "homeLink"> Demo </p>
