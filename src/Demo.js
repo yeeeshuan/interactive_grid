@@ -82,18 +82,18 @@ class Demo extends Component{
               </div>
               <div className = "bodyRightOne">
                 <div className = "description_first">
-                  <h1>Movement: {movementMap[this.state.moveKey]}</h1>  
+                  <h1 className = "interactionName">Movement: {movementMap[this.state.moveKey]}</h1>  
                   <MovementDes movementDes = {this.state.moveKey}/>
                 </div>
                 <div className = "description">
-                  <h1>Color: {colorMap[this.state.colorKey]}</h1>  
+                  <h1 className = "interactionName">Color: {colorMap[this.state.colorKey]}</h1>  
                   <ColorDes colorDes = {this.state.colorKey}/>
                 </div>   
                 <div className = "description">
-                <h1>Color Picker</h1>
-                <input type="color" id="colorOne" value= {this.state.colorOne} onChange = {this.handleColorPick}></input>
-                <input type="color" id="colorTwo" value= {this.state.colorTwo} onChange = {this.handleColorPick}></input>
-                <input type="color" id="colorThree" value= {this.state.colorThree} onChange = {this.handleColorPick}></input>
+                  <h1 className = "interactionName">Color Picker</h1>
+                  <input type="color" id="colorOne" value= {this.state.colorOne} onChange = {this.handleColorPick}></input>
+                  <input type="color" id="colorTwo" value= {this.state.colorTwo} onChange = {this.handleColorPick}></input>
+                  <input type="color" id="colorThree" value= {this.state.colorThree} onChange = {this.handleColorPick}></input>
                 </div> 
               </div>
               <div className = "bodyRightTwo">

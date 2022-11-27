@@ -5,26 +5,33 @@ function ColorDes(props){
     return(
         <div>
             {(props.colorDes == 0)?(
-                <p >
-                    This is the traditional method of interacting with a computer screen — keyboard interactions. <br/><br/>
-                    However, keyboards are not the most accessible mode of interaction—for those with disabilities
-                    hindering finger mobility, typing is an impossible task. 
-
+                <p>
+                    Keyboard interactions are the traditional method of interacting with a computer screen. <br/><br/>
+                    However, for those with disabilities hindering finger mobility, keyboards are not an accessible mode of interaction.<br/>
+                    <p className = "directions">
+                        Directions:<br/>
+                    </p>
+                    Use numbers keys 1,2,3 to assign color. Use the space bar to delete. 
                 </p>
             ):(props.colorDes == 1)?(
                 <p>
-                    This interaction looks at how to use the number of fingers held up to set a color.<br/><br/>
-                    The number of fingers you hold up corresponds to the color you assign to the grid: <br/><br/>
-                    Hold up one finger for color one <br/>
-                    two fingers for color two <br/>
-                    three fingers for color three <br/>
-                    and four fingers to delete the color <br/>
+                    This interaction looks at how to use the number of fingers held up to set a color.<br/>
+                    <p className = "directions">
+                        Directions:<br/>
+                    </p>
+                    Hold up one finger for color one, <br/><br/>
+                    Two fingers for color two, <br/><br/>
+                    Three fingers for color three, <br/><br/>
+                    Four fingers to delete the color <br/>
 
                 </p>
             
             ):(props.colorDes == 2)?(
                 <p>
-                    This interaction looks at how assign different objects to interactions with the computer <br/><br/>
+                    This interaction looks at how assign different objects to interactions with the computer <br/>
+                    <p className = "directions">
+                        Directions:<br/>
+                    </p>
                     Hold up different objects to your camera. In the text below the grid, you will see objects
                     being matched different colors.  <br/><br/>
                     Hold up the objects again to assign a color to different modules. 

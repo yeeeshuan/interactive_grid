@@ -7,7 +7,7 @@ p.popUpTitle{
     font-weight: bold;
     font-size: 24px; 
     color: white; 
-    padding-top: 0; 
+    padding-top: 0;
 }
 
 .popUp{
@@ -35,4 +35,11 @@ p.popUpText{
     line-height: 1.5;
     color:white; 
     padding: 0 15px 15px 15px; 
+}
+
+p.directions{
+    color: white; 
+    font-size: 18px; 
+    font-weight: bold; 
+    margin-bottom:10px; 
 }

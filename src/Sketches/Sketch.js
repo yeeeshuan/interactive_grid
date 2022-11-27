@@ -2,6 +2,7 @@ import React from "react";
 import Sketch from "react-p5";
 import * as ml5 from "ml5"; 
 
+//global
 let video; 
 let handpose; 
 let facemesh; 
@@ -38,8 +39,8 @@ let grid = [
 
     
 ]; 
-let temp = new Array(30).fill(0)
-let grid_2 = new Array(30).fill(temp)
+
+let temp = ""; 
 let numFingers = 0; 
 
 //face
@@ -56,9 +57,12 @@ let moveUpPrev = false;
 let moveUp = false; 
 let upSwitch = false; 
 
+//Grid function 
 function Grid(props){
-    
+
+    //setup for facemesh, handpose, and object detector 
 	const setup = (p5, canvasParentRef) => {
+        //creates video 
         video = p5.createCapture(p5.VIDEO);
         video.size(p5.windowWidth, p5.windowHeight);
         handpose = ml5.handpose(video, modelReady);
@@ -72,23 +76,21 @@ function Grid(props){
         });
 
         objectDetector = ml5.objectDetector('cocossd', {}, modelLoaded);
-        
-		// use parent to render the canvas in this ref
-		// (without that p5 will render the canvas outside of your component)
         video.hide()
-
+        //creates canvas 
         p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
 	};
 
-
+    //prints when models are ready 
     function modelReady() {
-        console.log("Model ready!");
+        console.log("FaceMesh Model ready!");
     }
 
     function modelLoaded() {
-        console.log('Model Loaded!');
+        console.log('Object Model Loaded!');
       }
 
+    //draws grid and text in sketch 
 	const draw = (p5) => {
         p5.background("#252837"); 
         configureGrid();
@@ -153,6 +155,7 @@ function Grid(props){
         }
     }
 
+    //for detectig facial movements 
     function findFace(){
         for (let i = 0; i<predictionsFace.length; i++){
             let points = predictionsFace[i].scaledMesh; 
@@ -184,7 +187,7 @@ function Grid(props){
                             position[0] += 1; 
                         }
                     }
-    
+
                 }else{
                     moveRight = false; 
                     rightSwitch = false; 
@@ -239,8 +242,6 @@ function Grid(props){
                 }
             }
         }
-                
-
     }
 
     //for setting objects to colors 
@@ -279,9 +280,8 @@ function Grid(props){
           });
     }
 
-
+    //for setting colors to the grid 
     function configureGrid(){
-        console.log(props.moveKey)
         if (props.colorKey == 1){
             findFingers(); 
             if (numFingers == 1){
@@ -323,6 +323,7 @@ function Grid(props){
 
     }
 
+    //helper function to draw grid 
     function drawGrid(p5) {
         var size = 30; 
         p5.stroke(80,80,80); 
@@ -347,11 +348,13 @@ function Grid(props){
     }
 	}
 
+    //distance formula 
     function distance(p1, p2) {
         let dis = Math.sqrt(Math.pow(p2[1] - p1[1], 2) +  Math.pow(p2[0] - p1[0], 2))
         return dis 
     }
 
+    //negative formula 
     function isNegative(one, two){
         if (two - one <0){
             return true; 
@@ -359,44 +362,51 @@ function Grid(props){
         return false; 
     }
 
+
+    //keypressed for default interactions 
   const keyPressed = (p5) =>{
     //moving around using keyboard
-    if (p5.keyCode == 37){
-      if (position[0] >= 1){
-        position[0] -= 1
-      }
-    }
-    if (p5.keyCode == 39){
-      if (position[0] <= grid.length-2){
-        position[0] += 1
-      }
-    }
-    if (p5.keyCode == 38){
-      if (position[1] >= 1){
-        position[1] -= 1
-      }
-    }
-    if (p5.keyCode == 40){
-      if (position[1] <= grid.length-2){
-        position[1] += 1
-      }
+    if (props.moveKey == 0)
+    {
+        if (p5.keyCode == 37){
+        if (position[0] >= 1){
+            position[0] -= 1
+        }
+        }
+        if (p5.keyCode == 39){
+        if (position[0] <= grid.length-2){
+            position[0] += 1
+        }
+        }
+        if (p5.keyCode == 38){
+        if (position[1] >= 1){
+            position[1] -= 1
+        }
+        }
+        if (p5.keyCode == 40){
+        if (position[1] <= grid.length-2){
+            position[1] += 1
+        }
+        }
     }
 
     //assigning color using keyboard 
-    if (p5.keyCode == 49){
-        grid[position[0]][position[1]] = 1
+    if (props.colorKey == 0){
+        if (p5.keyCode == 49){
+            grid[position[0]][position[1]] = 1
 
-      }
-    if (p5.keyCode == 50){
-        grid[position[0]][position[1]] = 2
-      }
-    if (p5.keyCode == 51){
-        grid[position[0]][position[1]] = 3
-      }
-    if (p5.keyCode == 32){
-        grid[position[0]][position[1]] = 0
-      }
-  }
+        }
+        if (p5.keyCode == 50){
+            grid[position[0]][position[1]] = 2
+        }
+        if (p5.keyCode == 51){
+            grid[position[0]][position[1]] = 3
+        }
+        if (p5.keyCode == 32){
+            grid[position[0]][position[1]] = 0
+        }
+        }
+    }
 	return <Sketch setup={setup} draw={draw} keyPressed ={keyPressed} />;
 };
 

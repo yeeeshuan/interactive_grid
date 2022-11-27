@@ -9,6 +9,10 @@ h1.homeTitle{
   padding-top: 0; 
 }
 
+h1.interactionName{
+  margin-bottom:10px;
+}
+
 .grid{
   z-index : -1; 
   display: inline-block; 
@@ -49,14 +53,19 @@ p.homeDesQuestion{
   margin-right: 15%; 
 }
 
+.homeBlock{
+  display: flex; 
+  justify-content: center; 
+}
+
+
 p.homeLink{
   color: white; 
   font-size: 24px; 
   text-align: center; 
   background-color: #0F1016;
   padding: 15px; 
-  margin-right: 45%; 
-  margin-left: 45%; 
+  margin-right: 15px; 
   border-radius: 15px; 
   margin-bottom: 0; 
   transition: 0.3s; 
@@ -79,12 +88,13 @@ p.homeLink:hover{
 
 .description_first{
   position: static; 
-  height: 20%
+  height: 20%; 
+  margin-bottom:0; 
 }
 
 .description{
   position: static; 
-  margin-top: 70px; 
+  margin-top: 100px; 
   height: 20%
 
 }
