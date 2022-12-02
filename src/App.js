@@ -44,14 +44,13 @@ class App extends Component{
                       Help
                 </div>
             </nav>
-            {this.state.popUp ? <PopUp/>
+            {this.state.popUp ? <div onClick = {this.isClicked} className = "background"><PopUp/></div>
               : <div/>}
             <Routes>
                 <Route exact path='/interactive_grid' element={<Home/>}></Route>
-                <Route exact path='/Demo' element={<Demo clicked = {this.state.popUp}/>}></Route>
+                <Route exact path='/Demo' element={<Demo clicked = {this.state.popUp} handleClicked = {this.isClicked}/>}></Route>
             </Routes>
             </Router>
-
         )
     } 
 }

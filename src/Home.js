@@ -30,14 +30,14 @@ function Home() {
             </p>
             <div className = "homeBlock">
                 <div className = "child">
+                    <Link to = "/Demo">
+                    <p className = "homeLink"> Demo </p>
+                    </Link>
+                </div>
+                <div className = "child">
                     <a href =  "https://github.com/yeeeshuan/interactive_grid">
                         <p className = "homeLink"> Github </p>
                     </a>
-                </div>
-                <div className = "child">
-                <Link to = "/Demo">
-                <p className = "homeLink"> Demo </p>
-                </Link>
                 </div>
             </div>
                 <Routes>

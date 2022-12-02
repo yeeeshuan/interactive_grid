@@ -7,6 +7,7 @@ let video;
 let handpose; 
 let facemesh; 
 let objectDetector; 
+let numFingers = 0; 
 let predictionsFinger = []; 
 let predictionsFace = []; 
 let obj_1 = null; 
@@ -15,6 +16,9 @@ let obj_3 = null;
 let obj_4 = null; 
 let object = null; 
 let position = [0,0]; 
+let classifier;
+let soundModel = 'https://teachablemachine.withgoogle.com/models/fi2FPJs__/';
+let label = 'listening...';
 let grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -41,7 +45,6 @@ let grid = [
 ]; 
 
 let temp = ""; 
-let numFingers = 0; 
 
 //face
 let moveLeftPrev = false; 
@@ -65,28 +68,27 @@ function Grid(props){
         //creates video 
         video = p5.createCapture(p5.VIDEO);
         video.size(p5.windowWidth, p5.windowHeight);
-        handpose = ml5.handpose(video, modelReady);
-        handpose.on("predict", results => {
-            predictionsFinger = results;
-        });
 
-        facemesh = ml5.facemesh(video, modelReady);
-        facemesh.on("predict", results => {
-            predictionsFace = results;
-        });
+        handpose = ml5.handpose(video, modelHand);
+        facemesh = ml5.facemesh(video, modelFace);
+        objectDetector = ml5.objectDetector('cocossd', {}, modelObject);
+        classifier = ml5.soundClassifier(soundModel + 'model.json');
 
-        objectDetector = ml5.objectDetector('cocossd', {}, modelLoaded);
         video.hide()
         //creates canvas 
         p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
 	};
 
     //prints when models are ready 
-    function modelReady() {
+    function modelHand() {
+        console.log("Handpose Model ready!");
+    }
+
+    function modelFace() {
         console.log("FaceMesh Model ready!");
     }
 
-    function modelLoaded() {
+    function modelObject() {
         console.log('Object Model Loaded!');
       }
 
@@ -106,6 +108,9 @@ function Grid(props){
 
     //for finding fingers and the number of fingers being held up 
     function findFingers() {
+        handpose.on("predict", results => {
+            predictionsFinger = results;
+        });
         let fingersUp = 0; 
         for (let i = 0; i < predictionsFinger.length; i += 1) {
             const prediction = predictionsFinger[i];
@@ -157,6 +162,11 @@ function Grid(props){
 
     //for detectig facial movements 
     function findFace(){
+        facemesh.on("predict", results => {
+            console.log("Face prediction occurred");
+            predictionsFace = results;
+        });
+
         for (let i = 0; i<predictionsFace.length; i++){
             let points = predictionsFace[i].scaledMesh; 
     
@@ -280,8 +290,40 @@ function Grid(props){
           });
     }
 
+    //for teachable machine sound 
+    function findSound(){
+        classifier.classify(gotResult);
+    }
+
+    function gotResult(error, results) {
+        if (error) {
+          console.error(error);
+          return;
+        }
+        // The results are in an array ordered by confidence.
+        // console.log(results[0]);
+        label = results[0];
+        if (label.confidence > 0.90)
+        {
+            if (label.label == "Clap"){
+                grid[position[0]][position[1]] = 1
+            }
+            if (label.label == "Crinkle"){
+                grid[position[0]][position[1]] = 2
+            }
+            if (label.label == "Knock"){
+                grid[position[0]][position[1]] = 3
+            }
+
+        }
+        console.log(label)
+      }
+
+
     //for setting colors to the grid 
     function configureGrid(){
+        //Colors 
+        //Fingers 
         if (props.colorKey == 1){
             findFingers(); 
             if (numFingers == 1){
@@ -301,6 +343,7 @@ function Grid(props){
             }
         }
 
+        //Objects
         if (props.colorKey == 2){
             objectColor(); 
             if (object == obj_1){
@@ -317,9 +360,17 @@ function Grid(props){
             }
         }
 
+        //Sounds 
+        if(props.colorKey == 3){
+            findSound(); 
+        }
+
+        //Movement Interactions 
         if (props.moveKey == 1){
             findFace()
         }
+
+        //Sounds
 
     }
 

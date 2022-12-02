@@ -1,10 +1,10 @@
 import React from "react";
 import "./description.css"; 
 
-function PopUp(){
+function PopUp(props){
     return (
-        <div className = "popUp">
-            <p className = "popUpText">
+        <div className = "popUp" onClick = {props.handleClicked}>
+            <p className = "popUpText" >
                 <p className = "popUpTitle">
                     Help
                 </p>

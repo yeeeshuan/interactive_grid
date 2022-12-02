@@ -13,7 +13,8 @@ let movementMap = {
 let colorMap = {
   0: "Keyboard",
   1: "Hands", 
-  2: "Object"
+  2: "Object", 
+  3: "Sound"
 }
 
 class Demo extends Component{
@@ -44,6 +45,7 @@ class Demo extends Component{
   handleColorKeyPress = (event) => {
     if (event.target.value != null){
       this.state.colorKey = parseInt(event.target.value)
+
       this.setState(prevState => ({
         ...prevState,
         colorKey: this.state.colorKey
@@ -75,7 +77,7 @@ class Demo extends Component{
     return(
           <div className = "centered">
             <div className = "body">
-              {this.props.clicked ? <PopUp/>
+              {this.props.clicked ? <div className = "background" onClick = {this.props.handleClicked}><PopUp onClick = {this.props.handleClicked}/></div>
               : <div/>}
               <div className = "grid">
                 <Grid moveKey = {this.state.moveKey} colorKey = {this.state.colorKey} colorOne = {this.state.colorOne} colorTwo = {this.state.colorTwo} colorThree = {this.state.colorThree}/>
@@ -98,12 +100,28 @@ class Demo extends Component{
               </div>
               <div className = "bodyRightTwo">
                 <div className = "interaction"> Movement</div>
-                <button type="button" value = "0" onClick = {this.handleMoveKeyPress}> Default—Keyboard </button> 
-                <button type="button" value = "1" onClick = {this.handleMoveKeyPress}> Face </button> 
+                {this.state.moveKey == 0? 
+                <button type="button" value = "0" onClick = {this.handleMoveKeyPress} style = {{color: "darkgrey", backgroundColor: "#333333"}}> Default—Keyboard </button> 
+                  :<button type="button" value = "0" onClick = {this.handleMoveKeyPress}> Default—Keyboard </button>}
+                 {this.state.moveKey == 1? 
+                <button type="button" value = "1" onClick = {this.handleMoveKeyPress} style = {{color: "darkgrey", backgroundColor: "#333333"}}> Face </button> 
+                  :<button type="button" value = "1" onClick = {this.handleMoveKeyPress}> Face </button>}
+                {this.state.moveKey == 2? 
+                <button type="button" value = "2" onClick = {this.handleMoveKeyPress} style = {{color: "darkgrey", backgroundColor: "#333333"}}> Sound </button> 
+                  :<button type="button" value = "2" onClick = {this.handleMoveKeyPress}> Sound </button>}
                 <div className = "interaction"> Color Assignment </div>
-                <button type="button" value = "0" onClick = {this.handleColorKeyPress}> Default—Keyboard </button> 
-                <button type="button" value = "1" onClick = {this.handleColorKeyPress}> Hands </button> 
-                <button type="button" value = "2" onClick = {this.handleColorKeyPress}> Object </button> 
+                {this.state.colorKey == 0? 
+                <button type="button" value = "0" onClick = {this.handleColorKeyPress} style = {{color: "darkgrey", backgroundColor: "#333333"}}> Default—Keyboard </button> 
+                  :<button type="button" value = "0" onClick = {this.handleColorKeyPress}> Default—Keyboard </button>}
+                 {this.state.colorKey == 1? 
+                <button type="button" value = "1" onClick = {this.handleColorKeyPress} style = {{color: "darkgrey", backgroundColor: "#333333"}}> Hands </button> 
+                  :<button type="button" value = "1" onClick = {this.handleColorKeyPress}> Hands </button>}
+                  {this.state.colorKey == 2? 
+                <button type="button" value = "2" onClick = {this.handleColorKeyPress} style = {{color: "darkgrey", backgroundColor: "#333333"}}> Object </button> 
+                  :<button type="button" value = "2" onClick = {this.handleColorKeyPress}> Object </button>}
+                  {this.state.colorKey == 3? 
+                <button type="button" value = "3" onClick = {this.handleColorKeyPress} style = {{color: "darkgrey", backgroundColor: "#333333"}}> Sound </button> 
+                  :<button type="button" value = "3" onClick = {this.handleColorKeyPress}> Sound </button>}
               </div>
             </div>
           </div>

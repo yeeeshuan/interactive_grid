@@ -28,13 +28,13 @@ p.popUpTitle{
     justify-content: space-between;
     align-items: center;
 
-    z-index: 2; 
+    z-index: 3; 
 }
 
 p.popUpText{
     line-height: 1.5;
     color:white; 
-    padding: 0 15px 15px 15px; 
+    padding: 0 30px 30px 30px; 
 }
 
 p.directions{
