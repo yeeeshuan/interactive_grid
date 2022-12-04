@@ -3,6 +3,7 @@ import Grid from "./Sketches/Sketch";
 import MovementDes from "./movementDes";
 import ColorDes from "./colorDes";
 import PopUp from "./Help";
+import Instructions from "./instruction";
 import "./App.css"; 
 
 let movementMap = {
@@ -26,29 +27,59 @@ class Demo extends Component{
       colorOne: "#3858FF", 
       colorTwo: "#FF7E89", 
       colorThree: "#9F54FF", 
+      moveFaceDemo: 0, 
+      moveSoundDemo: 0, 
+      colorHandDemo: 0, 
+      colorObjectDemo: 0, 
+      colorSoundDemo: 0, 
+      type: null
     }
   
   }
 
   handleMoveKeyPress = (event) => {
-    console.log(this.props.clicked)
+    this.state.type = "M"
     if (event.target.value != null){
       this.state.moveKey = parseInt(event.target.value)
+      if (this.state.moveKey == 1){
+        this.state.moveFaceDemo += 1
+      }
+      else if (this.state.moveKey == 2){
+        this.state.moveSoundDemo += 1
+      }
       this.setState(prevState => ({
         ...prevState,
-        moveKey: this.state.moveKey
+        moveKey: this.state.moveKey, 
+        moveFaceDemo: this.state.moveFaceDemo,
+        moveSoundDemo: this.state.moveSoundDemo, 
+        type: this.state.type
+
       }))
 
     }
   }
 
   handleColorKeyPress = (event) => {
+    this.state.type = "C"
     if (event.target.value != null){
       this.state.colorKey = parseInt(event.target.value)
+    
+    if (this.state.colorKey == 1){
+        this.state.colorHandDemo += 1
+      }
+    else if (this.state.colorKey == 2){
+        this.state.colorObjectDemo += 1
+      }
+    else if (this.state.colorKey == 3){
+        this.state.colorSoundDemo += 1
+      }   
 
       this.setState(prevState => ({
         ...prevState,
-        colorKey: this.state.colorKey
+        colorKey: this.state.colorKey, 
+        colorObjectDemo: this.state.colorObjectDemo, 
+        colorSoundDemo: this.state.colorSoundDemo, 
+        type: this.state.type
       }))
 
     }
@@ -72,12 +103,47 @@ class Demo extends Component{
       }))
   }
 
+  demoIsClicked = () =>{
+    if (this.state.type == "M"){
+    if(this.state.moveKey == 1){
+      this.state.moveFaceDemo += 1
+    }
+    else if (this.state.moveKey == 2){
+      this.state.moveSoundDemo += 1
+    }
+  }
+  else{
+    if (this.state.colorKey == 1){
+      this.state.colorHandDemo += 1
+    }
+    else if (this.state.colorKey == 2){
+      this.state.colorObjectDemo += 1
+    }
+    else if (this.state.colorKey == 3){
+      this.state.colorSoundDemo += 1
+    }
+  }
+    this.setState(prevState => ({
+      ...prevState,
+     moveFaceDemo: this.state.moveFaceDemo, 
+     moveSoundDemo: this.state.moveSoundDemo, 
+     colorHandDemo: this.state.colorHandDemo, 
+     colorObjectDemo: this.state.colorObjectDemo, 
+     colorSoundDemo: this.state.colorSoundDemo
+    }))
+
+  }
+
 
   render(){
     return(
           <div className = "centered">
             <div className = "body">
               {this.props.clicked ? <div className = "background" onClick = {this.props.handleClicked}><PopUp onClick = {this.props.handleClicked}/></div>
+              : <div/>}
+              {this.state.moveFaceDemo == 1 && this.state.moveKey == 1 || this.state.moveSoundDemo==1 && this.state.moveKey== 2 || 
+              this.state.colorHandDemo == 1 && this.state.colorKey ==1 || this.state.colorObjectDemo == 1 && this.state.colorKey == 2 || this.state.colorSoundDemo == 1 && this.state.colorKey == 3
+              ? <div className = "background" onClick = {this.demoIsClicked}> <Instructions onClick = {this.demoIsClicked} moveKey = {this.state.moveKey} colorKey = {this.state.colorKey} type = {this.state.type}/> </div>
               : <div/>}
               <div className = "grid">
                 <Grid moveKey = {this.state.moveKey} colorKey = {this.state.colorKey} colorOne = {this.state.colorOne} colorTwo = {this.state.colorTwo} colorThree = {this.state.colorThree}/>

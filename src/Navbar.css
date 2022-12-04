@@ -22,5 +22,6 @@ a:link, a:visited {
 a:hover{
     color: darkgray; 
     transition: 0.3s
+    
 }
 

@@ -18,13 +18,14 @@ class App extends Component{
     }
   }
 
-  isClicked = (event) =>{
+  popupIsClicked = (event) =>{
     console.log(this.state.popUp)
     this.state.popUp = !this.state.popUp; 
     this.setState(prevState => ({
       ...prevState,
       moveKey: this.state.popUp,
     }))
+
 
   }
 
@@ -40,15 +41,17 @@ class App extends Component{
                         Demo 
                   </Link>
                 </div>
-                <div onClick = {this.isClicked}>
+                <div onClick = {this.popupIsClicked}>
+                  <a>
                       Help
+                  </a>
                 </div>
             </nav>
-            {this.state.popUp ? <div onClick = {this.isClicked} className = "background"><PopUp/></div>
+            {this.state.popUp ? <div onClick = {this.popupIsClicked} className = "background"><PopUp onClick = {this.popupIsClicked}/></div>
               : <div/>}
             <Routes>
                 <Route exact path='/interactive_grid' element={<Home/>}></Route>
-                <Route exact path='/Demo' element={<Demo clicked = {this.state.popUp} handleClicked = {this.isClicked}/>}></Route>
+                <Route exact path='/Demo' element={<Demo clicked = {this.state.popUp} handleClicked = {this.popupIsClicked}/>}></Route>
             </Routes>
             </Router>
         )

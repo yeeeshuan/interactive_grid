@@ -18,6 +18,8 @@ let object = null;
 let position = [0,0]; 
 let classifier;
 let soundModel = 'https://teachablemachine.withgoogle.com/models/fi2FPJs__/';
+const options = { probabilityThreshold: 0.7 };
+let decoder; 
 let label = 'listening...';
 let grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -49,16 +51,24 @@ let temp = "";
 //face
 let moveLeftPrev = false; 
 let moveLeft = false; 
-let leftSwitch = false; 
 let moveRightPrev = false; 
 let moveRight = false; 
-let rightSwitch = false; 
 let moveDownPrev = false; 
 let moveDown = false; 
 let downSwitch = false; 
 let moveUpPrev = false; 
 let moveUp = false; 
 let upSwitch = false; 
+
+//sound
+let soundRight = false; 
+let soundRightPrev = null; 
+let soundLeft = false; 
+let soundLeftPrev = null; 
+let soundUp = false; 
+let soundUpPrev = null; 
+let soundDown = false; 
+let soundDownPrev = null; 
 
 //Grid function 
 function Grid(props){
@@ -73,6 +83,7 @@ function Grid(props){
         facemesh = ml5.facemesh(video, modelFace);
         objectDetector = ml5.objectDetector('cocossd', {}, modelObject);
         classifier = ml5.soundClassifier(soundModel + 'model.json');
+        decoder = ml5.soundClassifier('SpeechCommands18w', options, modelSound);
 
         video.hide()
         //creates canvas 
@@ -91,6 +102,11 @@ function Grid(props){
     function modelObject() {
         console.log('Object Model Loaded!');
       }
+
+    function modelSound() {
+        console.log('Sound Model Loaded!');
+      }
+
 
     //draws grid and text in sketch 
 	const draw = (p5) => {
@@ -160,10 +176,9 @@ function Grid(props){
         }
     }
 
-    //for detectig facial movements 
+    //for detecting facial movements 
     function findFace(){
         facemesh.on("predict", results => {
-            console.log("Face prediction occurred");
             predictionsFace = results;
         });
 
@@ -185,14 +200,11 @@ function Grid(props){
                 moveUpPrev = moveUp
                 moveDownPrev = moveDown
 
+                //for moving right 
                 if (isNegative(right[0], middle[0])){
                     console.log("Right")
                     moveRight = true; 
-                    if (moveRightPrev){
-                        rightSwitch = false; 
-                    }
-                    else if (!moveRightPrev){
-                        rightSwitch = true; 
+                    if (!moveRightPrev){
                         if (position[0] <= grid.length-2){
                             position[0] += 1; 
                         }
@@ -200,16 +212,12 @@ function Grid(props){
 
                 }else{
                     moveRight = false; 
-                    rightSwitch = false; 
                 }
 
+                //for moving left 
                 if (!isNegative(left[0], middle[0])){
                     moveLeft = true; 
-                    if (moveLeftPrev){
-                        leftSwitch = false; 
-                    }
-                    else if (!moveLeftPrev){
-                        leftSwitch = true; 
+                    if (!moveLeftPrev){
                         position[0] -= 1; 
                         if (position[0]<=0){
                         position[0] = 0; 
@@ -217,9 +225,9 @@ function Grid(props){
                 }
                 }else{
                     moveLeft = false; 
-                    leftSwitch = false; 
                 }
 
+                //for moving down 
                 if (distance(lip_up, lip_down) > 15){
                     moveDown = true; 
                     if (moveDownPrev){
@@ -235,6 +243,7 @@ function Grid(props){
                     downSwitch = false; 
                 }
 
+                //for moving up 
                 if (!isNegative(middle[1], up[1])){
                     moveUp = true; 
                     if (moveUpPrev){
@@ -291,17 +300,75 @@ function Grid(props){
     }
 
     //for teachable machine sound 
-    function findSound(){
-        classifier.classify(gotResult);
+    function soundColor(){
+        classifier.classify(gotResultTM);
     }
 
-    function gotResult(error, results) {
+    function findSound(){
+        decoder.classify(gotResult); 
+    }
+
+    function gotResult(error, result) {
+        if (error) {
+          console.log(error);
+          return;
+        }
+        soundUpPrev = soundUp; 
+        soundDownPrev = soundDown; 
+        soundLeftPrev = soundLeft; 
+        soundRightPrev = soundRight; 
+        console.log(result[0].label)
+        if (result[0].label == "up" && result[0].confidence > 0.95){
+            soundUp = true; 
+            if (!soundUpPrev){
+                position[1] -= 1
+                if (position[1]<=0){
+                    position[1] = 0; 
+                }
+            }
+        }else{
+            soundUp = false; 
+        }
+        if (result[0].label == "down" && result[0].confidence > 0.95){
+            soundDown = true; 
+            if (!soundDownPrev){
+                if (position[1] <= grid.length-2){
+                    position[1] += 1; 
+                }
+            }
+        }else{
+            soundDown = false; 
+        }
+        if (result[0].label == "left" && result[0].confidence > 0.95){
+            soundLeft = true; 
+            if (!soundLeftPrev){
+                position[0] -= 1; 
+                if (position[0]<=0){
+                position[0] = 0; 
+                }
+            }
+        } else{
+            soundLeft = false; 
+        }
+        if (result[0].label == "right" && result[0].confidence > 0.95){
+            soundRight = true; 
+            if (!soundRightPrev){
+                if (position[0] <= grid.length-2){
+                    console.log(soundRight, soundRightPrev)
+                    position[0] += 1; 
+                }
+        }
+        } else{
+            soundRight = false; 
+        }
+      }
+
+    function gotResultTM(error, results) {
         if (error) {
           console.error(error);
           return;
         }
         // The results are in an array ordered by confidence.
-        // console.log(results[0]);
         label = results[0];
         if (label.confidence > 0.90)
         {
@@ -316,7 +383,6 @@ function Grid(props){
             }
 
         }
-        console.log(label)
       }
 
 
@@ -346,6 +412,7 @@ function Grid(props){
         //Objects
         if (props.colorKey == 2){
             objectColor(); 
+            //when object is detected, grid will be colored correspondingly 
             if (object == obj_1){
                 grid[position[0]][position[1]] = 1
             }
@@ -362,16 +429,17 @@ function Grid(props){
 
         //Sounds 
         if(props.colorKey == 3){
-            findSound(); 
+            soundColor(); 
         }
 
         //Movement Interactions 
         if (props.moveKey == 1){
-            findFace()
+            findFace(); 
         }
-
         //Sounds
-
+        if (props.moveKey == 2){
+            findSound(); 
+        }
     }
 
     //helper function to draw grid 
@@ -394,7 +462,7 @@ function Grid(props){
           }
           p5.rect(p5.windowWidth * 0.1 + (size*i) , 25 + (size*j), size, size); 
       }
-      p5.fill(255, 255, 255, 63); 
+      p5.fill(255, 255, 255); 
       p5.rect(p5.windowWidth * 0.1 + (size*position[0]) , 25 + (size*position[1]), size, size);
     }
 	}
@@ -412,7 +480,6 @@ function Grid(props){
         }
         return false; 
     }
-
 
     //keypressed for default interactions 
   const keyPressed = (p5) =>{
@@ -445,7 +512,6 @@ function Grid(props){
     if (props.colorKey == 0){
         if (p5.keyCode == 49){
             grid[position[0]][position[1]] = 1
-
         }
         if (p5.keyCode == 50){
             grid[position[0]][position[1]] = 2

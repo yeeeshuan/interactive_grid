@@ -1,6 +1,6 @@
 p{
     color: darkgray; 
-    font-size: 14px; 
+    font-size: 14px;
 }
 
 p.popUpTitle{
@@ -33,13 +33,24 @@ p.popUpTitle{
 
 p.popUpText{
     line-height: 1.5;
-    color:white; 
-    padding: 0 30px 30px 30px; 
+    color:darkgrey; 
+    padding: 0 30px 0px 30px; 
 }
 
-p.directions{
+p.bold{
     color: white; 
     font-size: 18px; 
     font-weight: bold; 
     margin-bottom:10px; 
+}
+
+p.directions{
+    color: white; 
+    text-align: left; 
+    padding: 0 30px 0 30px
+}
+
+p.instructions{
+    color: white; 
+    text-align: left; 
 }

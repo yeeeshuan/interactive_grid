@@ -10,10 +10,10 @@ function MovementDes(props){
                     Keyboard interactions are the traditional method of interacting with a computer screen. <br/><br/>
                     However, for those with disabilities hindering finger mobility, keyboards are not an accessible mode of interaction.
                     </p>
-                    <p className = "directions">
+                    <p className = "bold">
                         Directions:<br/>
                     </p>
-                    <p>
+                    <p className = "instructions">
                     Use the arrow keys to navigate the grid. 
                     </p>
                 </div>
@@ -26,12 +26,12 @@ function MovementDes(props){
                         <br/>
                         The ML5.js Facemesh Library allows for facial landmark detection. 
                      </p>
-                     <p className = "directions">
+                     <p className = "bold">
                         Directions:<br/>
                     </p>
-                    <p>
-                        Turn your head left and right to move left and right.<br/>
-                        Tilt your head up to move up. <br/>
+                    <p className = "instructions">
+                        Turn your head left and right to move left and right.<br/><br/>
+                        Tilt your head up to move up. <br/><br/>
                         Open your mouth to move down. 
                     </p>
                 </div>
@@ -43,10 +43,10 @@ function MovementDes(props){
                         <br/>
                         The Google Teachable Machine allows for audio recognition ML model training. 
                     </p>
-                    <p className = "directions">
+                    <p className = "bold">
                         Directions:<br/>
                     </p>
-                    <p>
+                    <p className = "instructions">
                         Say left, right, up, down to navigate the grid. 
                     </p>
                 </div>
