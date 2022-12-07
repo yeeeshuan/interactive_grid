@@ -27,7 +27,7 @@ let grid = [
 ]; 
 let timer = 0; 
 
-function HomeGrid(props){
+function HomeGridMobile(props){
     
 	const setup = (p5, canvasParentRef) => {
         video = p5.createCapture(p5.VIDEO);
@@ -78,14 +78,14 @@ function HomeGrid(props){
           else if (grid[i][j] == 3) {
               p5.fill("#9F54FF"); 
           }
-          p5.rect(p5.windowWidth * 0.25 + (size*i) , 25 + (size*j), size, size); 
+          p5.rect(p5.windowWidth * 0.15 + (size*i) , 15 + (size*j), size, size); 
       }
       p5.fill(255, 255, 255); 
-      p5.rect(p5.windowWidth * 0.25 + (size*position[0]) , 25 + (size*position[1]), size, size);
+      p5.rect(p5.windowWidth * 0.15 + (size*position[0]) , 15 + (size*position[1]), size, size);
     }
 	}
 
 	return <Sketch setup={setup} draw={draw} />
 };
 
-export default HomeGrid; 
+export default HomeGridMobile; 

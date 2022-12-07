@@ -13,6 +13,10 @@ h1.interactionName{
   margin-bottom:10px;
 }
 
+label{
+  color: transparent; 
+}
+
 .grid{
   z-index : -1; 
   display: inline-block; 
@@ -151,4 +155,17 @@ input{
   height: 75px; 
   border-width: 0;
   margin-right: 15px; 
+}
+
+@media (max-width: 1200px){
+  h1.interactionName{
+    font-size: 20px; 
+  }
+  input{
+    width: 60px; 
+    height: 60px; 
+    border-width: 0;
+    margin-right: 15px;
+  }
+  
 }

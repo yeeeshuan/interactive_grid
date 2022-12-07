@@ -34,8 +34,8 @@ class Demo extends Component{
       colorSoundDemo: 0, 
       type: null
     }
-  
   }
+
 
   handleMoveKeyPress = (event) => {
     this.state.type = "M"
@@ -134,7 +134,6 @@ class Demo extends Component{
 
   }
 
-
   render(){
     return(
           <div className = "centered">
@@ -163,6 +162,9 @@ class Demo extends Component{
                   <input type="color" id="colorTwo" value= {this.state.colorTwo} onChange = {this.handleColorPick}></input>
                   <input type="color" id="colorThree" value= {this.state.colorThree} onChange = {this.handleColorPick}></input>
                 </div> 
+                <label id="searchLabel" for="colorOne"> One </label>
+                <label id="searchLabel" for="colorTwo"> Two </label>
+                <label id="searchLabel" for="colorThree"> Three</label>
               </div>
               <div className = "bodyRightTwo">
                 <div className = "interaction"> Movement</div>

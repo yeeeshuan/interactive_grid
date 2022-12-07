@@ -24,8 +24,7 @@ function Instructions(props){
                                 Open your mouth to move down. 
                             </p>
                             <br/>
-                            <br/>
-                            
+                            <br/>                    
                 </div>
             ):(props.moveKey == 2 && props.type == "M")?(
                 <div className = "popUp" onClick = {props.handleClicked}>
@@ -89,8 +88,7 @@ function Instructions(props){
                         Hold up the objects again to assign a color to different modules. 
                         </p>
                         <br/>
-                        <br/>
-                        
+                        <br/>        
             </div>
             )
             :(props.colorKey == 3 && props.type == "C")?(

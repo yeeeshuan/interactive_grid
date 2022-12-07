@@ -1,6 +1,7 @@
 import React from "react";
 import Sketch from "react-p5";
 import * as ml5 from "ml5"; 
+import { useMediaQuery } from 'react-responsive';
 
 //global
 let video; 
@@ -72,9 +73,26 @@ let soundDownPrev = null;
 
 //Grid function 
 function Grid(props){
+    const matches = useMediaQuery({ query: '(max-width: 1200px)' });
 
     //setup for facemesh, handpose, and object detector 
 	const setup = (p5, canvasParentRef) => {
+        //creates video 
+        video = p5.createCapture(p5.VIDEO);
+        video.size(p5.windowWidth, p5.windowHeight);
+
+        handpose = ml5.handpose(video, modelHand);
+        facemesh = ml5.facemesh(video, modelFace);
+        objectDetector = ml5.objectDetector('cocossd', {}, modelObject);
+        classifier = ml5.soundClassifier(soundModel + 'model.json');
+        decoder = ml5.soundClassifier('SpeechCommands18w', options, modelSound);
+
+        video.hide()
+        //creates canvas 
+        p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
+	};
+
+    const setupMobile = (p5, canvasParentRef) => {
         //creates video 
         video = p5.createCapture(p5.VIDEO);
         video.size(p5.windowWidth, p5.windowHeight);
@@ -113,6 +131,19 @@ function Grid(props){
         p5.background("#252837"); 
         configureGrid();
         drawGrid(p5); 
+        p5.textSize(12)
+        if (props.colorKey == 2){
+            p5.text("Object for Color 1: " + obj_1, p5.windowWidth * 0.1, 700)
+            p5.text("Object for Color 2: " + obj_2, p5.windowWidth * 0.1 + 150, 700)
+            p5.text("Object for Color 3: " + obj_3, p5.windowWidth * 0.1 + 300, 700)
+            p5.text("Object for deleting: " + obj_4, p5.windowWidth * 0.1 + 450, 700)
+        }
+    }
+
+    const drawMobile = (p5) => {
+        p5.background("#252837"); 
+        configureGrid();
+        drawGridMobile(p5); 
         p5.textSize(12)
         if (props.colorKey == 2){
             p5.text("Object for Color 1: " + obj_1, p5.windowWidth * 0.1, 700)
@@ -467,6 +498,31 @@ function Grid(props){
     }
 	}
 
+        //helper function to draw grid 
+        function drawGridMobile(p5) {
+            var size = 25; 
+            p5.stroke(80,80,80); 
+            for(var i = 0; i <grid.length; i++){
+            for (var j = 0; j< grid.length; j++){
+              if (grid[i][j] == 0){
+                  p5.fill(15, 16, 22);  
+              }
+              else if (grid[i][j] == 1) {
+                  p5.fill(props.colorOne); 
+              }
+              else if (grid [i][j] == 2) {
+                  p5.fill(props.colorTwo); 
+              }
+              else if (grid [i][j] == 3) {
+                  p5.fill(props.colorThree); 
+              }
+              p5.rect(p5.windowWidth * 0.05 + (size*i) , 10 + (size*j), size, size); 
+          }
+          p5.fill(255, 255, 255); 
+          p5.rect(p5.windowWidth * 0.05 + (size*position[0]) , 10 + (size*position[1]), size, size);
+        }
+        }
+
     //distance formula 
     function distance(p1, p2) {
         let dis = Math.sqrt(Math.pow(p2[1] - p1[1], 2) +  Math.pow(p2[0] - p1[0], 2))
@@ -524,7 +580,12 @@ function Grid(props){
         }
         }
     }
-	return <Sketch setup={setup} draw={draw} keyPressed ={keyPressed} />;
+	return(<div>
+        {!matches? (<Sketch setup={setup} draw={draw} keyPressed ={keyPressed} />)
+    :((<Sketch setup={setupMobile} draw={drawMobile} keyPressed ={keyPressed} />))
+        }
+        </div>
+    )
 };
 
 export default Grid
