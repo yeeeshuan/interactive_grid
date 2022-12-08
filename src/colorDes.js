@@ -1,6 +1,7 @@
 import React from "react"; 
 import "./description.css"
 
+//instructions for color interactions 
 function ColorDes(props){
     return(
         <div>

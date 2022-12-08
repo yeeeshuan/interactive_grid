@@ -1,6 +1,7 @@
 import React from "react";
 import "./description.css"; 
 
+//helper popup 
 function PopUp(props){
     return (
         <div className = "popUp" onClick = {props.handleClicked}>

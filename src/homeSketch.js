@@ -1,6 +1,7 @@
 import React from "react";
 import Sketch from "react-p5";
 
+//params 
 let video; 
 let position = [0,0]; 
 let grid = [
@@ -27,6 +28,8 @@ let grid = [
 ]; 
 let timer = 0; 
 
+//sketch for drawing grid in home screen 
+
 function HomeGrid(props){
     
 	const setup = (p5, canvasParentRef) => {
@@ -43,6 +46,7 @@ function HomeGrid(props){
         drawGrid(p5); 
     }
 
+    //moves grid automatically 
     function autoMove(){
         if (Math.floor(timer, 1) % 25 == 0){
             position[0] += 1; 
@@ -60,6 +64,7 @@ function HomeGrid(props){
     }
 }
 
+    //draws grid with regard to what color was set to its position 
     function drawGrid(p5) {
         var size = 40; 
         autoMove(); 

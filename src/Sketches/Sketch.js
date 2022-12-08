@@ -3,7 +3,7 @@ import Sketch from "react-p5";
 import * as ml5 from "ml5"; 
 import { useMediaQuery } from 'react-responsive';
 
-//global
+//params 
 let video; 
 let handpose; 
 let facemesh; 
@@ -73,7 +73,7 @@ let soundDownPrev = null;
 
 //Grid function 
 function Grid(props){
-    const matches = useMediaQuery({ query: '(max-width: 1200px)' });
+    const matches = useMediaQuery({ query: '(max-width: 1400px)' });
 
     //setup for facemesh, handpose, and object detector 
 	const setup = (p5, canvasParentRef) => {
@@ -95,7 +95,7 @@ function Grid(props){
     const setupMobile = (p5, canvasParentRef) => {
         //creates video 
         video = p5.createCapture(p5.VIDEO);
-        video.size(p5.windowWidth, p5.windowHeight);
+        video.size(p5.windowWidth * 0.75, p5.windowHeight);
 
         handpose = ml5.handpose(video, modelHand);
         facemesh = ml5.facemesh(video, modelFace);
@@ -105,7 +105,7 @@ function Grid(props){
 
         video.hide()
         //creates canvas 
-        p5.createCanvas(p5.windowWidth, p5.windowHeight).parent(canvasParentRef);
+        p5.createCanvas(p5.windowWidth, 0.4 * p5.windowHeight ).parent(canvasParentRef);
 	};
 
     //prints when models are ready 
@@ -500,7 +500,7 @@ function Grid(props){
 
         //helper function to draw grid 
         function drawGridMobile(p5) {
-            var size = 25; 
+            var size = 20; 
             p5.stroke(80,80,80); 
             for(var i = 0; i <grid.length; i++){
             for (var j = 0; j< grid.length; j++){
@@ -581,8 +581,9 @@ function Grid(props){
         }
     }
 	return(<div>
-        {!matches? (<Sketch setup={setup} draw={draw} keyPressed ={keyPressed} />)
-    :((<Sketch setup={setupMobile} draw={drawMobile} keyPressed ={keyPressed} />))
+        {!matches?(
+        <Sketch setup={setup} draw={draw} keyPressed ={keyPressed} />)
+        :(<Sketch setup={setupMobile} draw={drawMobile} keyPressed ={keyPressed} />)
         }
         </div>
     )

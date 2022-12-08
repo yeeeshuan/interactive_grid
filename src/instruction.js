@@ -1,6 +1,7 @@
 import React from "react";
 import "./description.css"; 
 
+//instructions for interactions 
 function Instructions(props){
     return (
         <div>
@@ -41,7 +42,7 @@ function Instructions(props){
                             Directions:<br/>
                         </p>
                         <p className = "directions">
-                            Clap, crinkle a piece of paper, or knock on your desk three times to assign a color to different modules.<br/><br/>
+                            Say left, right, up, down to navigate the grid.<br/><br/>
                         </p>
                     
             </div>

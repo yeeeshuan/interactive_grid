@@ -6,6 +6,7 @@ import PopUp from "./Help";
 import Instructions from "./instruction";
 import "./App.css"; 
 
+//params 
 let movementMap = {
   0: "Keyboard",
   1: "Face" 
@@ -18,6 +19,7 @@ let colorMap = {
   3: "Sound"
 }
 
+//demo page 
 class Demo extends Component{
   constructor(props){
     super(props)
@@ -36,7 +38,7 @@ class Demo extends Component{
     }
   }
 
-
+  //handles movement interactions 
   handleMoveKeyPress = (event) => {
     this.state.type = "M"
     if (event.target.value != null){
@@ -59,6 +61,7 @@ class Demo extends Component{
     }
   }
 
+  //handles color interactions 
   handleColorKeyPress = (event) => {
     this.state.type = "C"
     if (event.target.value != null){
@@ -85,6 +88,7 @@ class Demo extends Component{
     }
   }
 
+  //handles the color picked 
   handleColorPick = (event) =>{
     if (event.target.id == "colorOne"){ 
       this.state.colorOne = event.target.value
@@ -103,6 +107,7 @@ class Demo extends Component{
       }))
   }
 
+  //handles when the demo is clicked; initiates onboarding popup 
   demoIsClicked = () =>{
     if (this.state.type == "M"){
     if(this.state.moveKey == 1){

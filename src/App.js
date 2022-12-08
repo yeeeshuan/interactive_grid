@@ -10,6 +10,7 @@ import Demo from "./Demo";
 import PopUp from "./Help";
 import "./Navbar.css"
 
+//app class: creates Navar and renders out page clicked 
 class App extends Component{
   constructor(props){
     super(); 
@@ -18,6 +19,7 @@ class App extends Component{
     }
   }
 
+  //if help is clicked 
   popupIsClicked = (event) =>{
     console.log(this.state.popUp)
     this.state.popUp = !this.state.popUp; 

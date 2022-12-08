@@ -93,6 +93,16 @@ p.homeLink:hover{
   bottom: 0; 
 }
 
+.bodyRightTwo{
+  z-index: 1; 
+  display: block; 
+  justify-items: right;
+  background-color: #0F1016;
+  width: 25%; 
+  height: 100%; 
+  bottom: 0; 
+}
+
 .background{
   position: fixed;
   z-index: 2; 
@@ -114,15 +124,6 @@ p.homeLink:hover{
   height: 15%
 }
 
-.bodyRightTwo{
-  z-index: 1; 
-  display: block; 
-  justify-items: right;
-  background-color: #0F1016;
-  width: 25%; 
-  height: 100%; 
-  bottom: 0; 
-}
 
 .interaction{
   color: white; 
@@ -155,17 +156,4 @@ input{
   height: 75px; 
   border-width: 0;
   margin-right: 15px; 
-}
-
-@media (max-width: 1200px){
-  h1.interactionName{
-    font-size: 20px; 
-  }
-  input{
-    width: 60px; 
-    height: 60px; 
-    border-width: 0;
-    margin-right: 15px;
-  }
-  
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import HomeGrid from './homeSketch';
-import HomeGridMobile from './homeSketchMobile';
 import { useMediaQuery } from 'react-responsive';
 import {
     BrowserRouter as Router,
@@ -12,10 +11,8 @@ import "./App.css"
 import Demo from './Demo';
 
 
-  
+//homepage 
 const Home = () => {
-
-    const matches = useMediaQuery({ query: '(max-width: 1200px)' });
 
     return(
          <div className = "home">
@@ -50,11 +47,7 @@ const Home = () => {
                 <Routes>
                     <Route exact path='/Demo' element={< Demo />}></Route>
                 </Routes>
-            {!matches? 
-            (<HomeGrid/>)
-            :(
-            <HomeGridMobile/>
-            )}   
+            <HomeGrid/>
         </div>
     )
 }
